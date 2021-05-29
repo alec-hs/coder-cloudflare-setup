@@ -5,6 +5,18 @@ echo
 echo "Installing Coder and requirements..."
 echo
 
+# Ask user for coder and caddy info
+echo
+echo "Please enter a password for Coder web GUI:"
+read -s password
+echo
+echo "Please enter your domain:"
+read domain
+echo
+echo "Please enter your Cloudflare API Token:"
+read -s token
+echo
+
 # Update server
 sudo apt update -y && sudo apt upgrade -y
 
@@ -23,14 +35,11 @@ chown -R coder:coder /home/coder/.ssh
 # Download & install Coder
 curl -fsSL https://code-server.dev/install.sh | sh
 
-# Run Coder & run on boot
-systemctl enable --now code-server@coder
+# Download caddy file from repo and replace default
+curl https://raw.githubusercontent.com/alec-hs/coder-hetzner-setup/main/code-server.service --output /etc/systemd/system/coder-server.service
 
-# Ask user for coder password
-echo
-echo "Please enter a password for Coder web GUI:"
-read -s password
-echo
+# Run Coder & run on boot
+systemctl enable --now code-server
 
 # Hash the password
 hash=$(echo $password | sha256sum | cut -d' ' -f1)
@@ -60,15 +69,6 @@ sudo apt install caddy xcaddy -y
 # Build Caddy with Cloudflare DNS then replace exisiting binary
 xcaddy build master --with github.com/caddy-dns/cloudflare@latest
 mv caddy /usr/bin
-
-# Ask user for Caddy info
-echo
-echo "Please enter your domain:"
-read domain
-echo
-echo "Please enter your Cloudflare API Token:"
-read -s token
-echo
 
 # Download caddy file from repo and replace default
 curl https://raw.githubusercontent.com/alec-hs/coder-hetzner-setup/main/Caddyfile --output /etc/caddy/Caddyfile
