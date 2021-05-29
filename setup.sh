@@ -16,6 +16,8 @@ echo
 echo "Please enter your Cloudflare API Token:"
 read -s token
 echo
+echo "Setting up Caddy and Coder services..."
+echo
 
 # Update server
 sudo apt update -y && sudo apt upgrade -y
@@ -36,7 +38,7 @@ chown -R coder:coder /home/coder/.ssh
 curl -fsSL https://code-server.dev/install.sh | sh
 
 # Download caddy file from repo and replace default
-curl https://raw.githubusercontent.com/alec-hs/coder-hetzner-setup/main/code-server.service --output /etc/systemd/system/coder-server.service
+curl https://raw.githubusercontent.com/alec-hs/coder-hetzner-setup/main/code-server.service --output /etc/systemd/system/code-server.service
 
 # Run Coder & run on boot
 systemctl enable --now code-server
@@ -83,5 +85,5 @@ sudo systemctl start caddy
 
 # Script Complete
 echo
-echo "Script complete - you can acess Coder at https://$domain"
+echo "Setup complete - you can acess Coder at https://$domain"
 echo
