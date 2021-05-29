@@ -51,7 +51,7 @@ curl https://raw.githubusercontent.com/alec-hs/coder-cloudflare-setup/main/code-
 systemctl enable --now code-server
 
 # Update Coder config in /home/coder/.config/code-server/config.yaml
-sed -i.bak "s/password: .*/hash-password: $hash/" /home/coder/.config/code-server/config.yaml
+sed -i.bak "s/password: .*/hashed-password: $hash/" /home/coder/.config/code-server/config.yaml
 
 # Install go to build custom Caddy
 wget https://golang.org/dl/go1.16.4.linux-amd64.tar.gz
@@ -94,7 +94,9 @@ echo
 echo "                      Setup complete"
 echo
 echo "                 Code Server will be ready at"
-echo "            https://$domain"
+echo
+echo "https://$domain"
+echo
 echo "                      in a few minutes."
 echo
 echo "------------------------------------------------------------"
