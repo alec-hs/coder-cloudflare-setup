@@ -1,20 +1,23 @@
 #!/bin/bash
 
 # Start Script and ask for info
-echo '----------------------------------------------'
+echo '------------------------------------------------------------'
 echo
-echo "         Code Server Automated Setup"
+echo "              Code Server Automated Setup"
 echo
-echo '----------------------------------------------'
+echo '------------------------------------------------------------'
 echo
 read -s -p "Please enter a password for Coder web GUI: " password
+echo
 echo
 read -p "Please enter your domain: " domain
 echo
 read -s -p "Please enter your Cloudflare API Token: " token
 echo
-echo "Setting up Caddy and Coder services..."
 echo
+echo "         Setting up Caddy and Coder services..."
+echo
+echo '------------------------------------------------------------'
 
 # Hash the password
 hash=$(printf $password | sha256sum | cut -d' ' -f1)
@@ -82,5 +85,10 @@ sudo systemctl start caddy
 
 # Script Complete
 echo
-echo "Setup complete - you can acess Coder at https://$domain"
+echo '------------------------------------------------------------'
 echo
+echo "                Setup complete"
+echo
+echo " Code Server will be at https://$domain in a few minutes."
+echo
+echo '------------------------------------------------------------'
