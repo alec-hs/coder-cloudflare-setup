@@ -47,11 +47,11 @@ curl -fsSL https://code-server.dev/install.sh | sh
 # Download caddy file from repo and replace default
 curl https://raw.githubusercontent.com/alec-hs/coder-cloudflare-setup/main/code-server.service --output /etc/systemd/system/code-server.service
 
-# Run Coder & run on boot
-systemctl enable --now code-server
-
 # Update Coder config in /home/coder/.config/code-server/config.yaml
 sed -i.bak "s/password: .*/hashed-password: $hash/" /home/coder/.config/code-server/config.yaml
+
+# Run Coder & run on boot
+systemctl enable --now code-server
 
 # Install go to build custom Caddy
 wget https://golang.org/dl/go1.16.4.linux-amd64.tar.gz
@@ -69,7 +69,7 @@ curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/cfg/setup/config.deb.tx
 
 curl -1sLf 'https://dl.cloudsmith.io/public/caddy/xcaddy/gpg.key' | sudo apt-key add -
 curl -1sLf 'https://dl.cloudsmith.io/public/caddy/xcaddy/debian.deb.txt' | sudo tee /etc/apt/sources.list.d/caddy-xcaddy.list
-sudo apt update
+sudo apt update -y
 sudo apt install caddy xcaddy -y
 
 # Build Caddy with Cloudflare DNS then replace exisiting binary
