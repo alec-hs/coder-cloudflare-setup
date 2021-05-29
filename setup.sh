@@ -47,9 +47,6 @@ curl -fsSL https://code-server.dev/install.sh | sh
 # Download caddy file from repo and replace default
 curl https://raw.githubusercontent.com/alec-hs/coder-cloudflare-setup/main/code-server.service --output /etc/systemd/system/code-server.service
 
-# Update Coder config in /home/coder/.config/code-server/config.yaml
-sed -i.bak "s/password: .*/hashed-password: $hash/" /home/coder/.config/code-server/config.yaml
-
 # Run Coder & run on boot
 systemctl enable --now code-server
 
@@ -83,9 +80,16 @@ curl https://raw.githubusercontent.com/alec-hs/coder-cloudflare-setup/main/Caddy
 sed -i.bak "s/sub.mydomain.com/$domain/" /etc/caddy/Caddyfile
 sed -i.bak "s/API_TOKEN/$token/" /etc/caddy/Caddyfile
 
-# Reload Caddy
+# Update Coder config in /home/coder/.config/code-server/config.yaml
+sed -i.bak "s/password: .*/hashed-password: $hash/" /home/coder/.config/code-server/config.yaml
+
+# Reload Caddy and Coder
+sudo systemctl stop code-server
+sudo systemctl start code-server
 sudo systemctl stop caddy
 sudo systemctl start caddy
+
+
 
 # Script Complete
 echo
