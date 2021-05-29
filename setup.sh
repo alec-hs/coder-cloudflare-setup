@@ -70,11 +70,8 @@ echo "Please enter your Cloudflare API Token:"
 read -s token
 echo
 
-# Download caddy file from repo
-curl https://raw.githubusercontent.com/alec-hs/coder-hetzner-setup/main/Caddyfile --output Caddyfile
-
-# Replace default Caddyfile - /etc/caddy/Caddyfile
-mv Caddyfile /etc/caddy/Caddyfile
+# Download caddy file from repo and replace default
+curl https://raw.githubusercontent.com/alec-hs/coder-hetzner-setup/main/Caddyfile --output /etc/caddy/Caddyfile
 
 # Update Caddyfile 
 sed -i.bak "s/sub.mydomain.com/$domain/" /etc/caddy/Caddyfile
