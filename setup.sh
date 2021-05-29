@@ -1,23 +1,23 @@
 #!/bin/bash
 
-# Start Script
+# Start Script and ask for info
+echo '----------------------------------------------'
 echo
-echo "Installing Coder and requirements..."
+echo "         Code Server Automated Setup"
 echo
-
-# Ask user for coder and caddy info
+echo '----------------------------------------------'
 echo
-echo "Please enter a password for Coder web GUI:"
-read -s password
+read -s -p "Please enter a password for Coder web GUI: " password
 echo
-echo "Please enter your domain:"
-read domain
+read -p "Please enter your domain: " domain
 echo
-echo "Please enter your Cloudflare API Token:"
-read -s token
+read -s -p "Please enter your Cloudflare API Token: " token
 echo
 echo "Setting up Caddy and Coder services..."
 echo
+
+# Hash the password
+hash=$(printf $password | sha256sum | cut -d' ' -f1)
 
 # Update server
 sudo apt update -y && sudo apt upgrade -y
@@ -42,9 +42,6 @@ curl https://raw.githubusercontent.com/alec-hs/coder-hetzner-setup/main/code-ser
 
 # Run Coder & run on boot
 systemctl enable --now code-server
-
-# Hash the password
-hash=$(echo $password | sha256sum | cut -d' ' -f1)
 
 # Update Coder config in /home/coder/.config/code-server/config.yaml
 sed -i.bak "s/password: .*/hash-password: $hash/" /home/coder/.config/code-server/config.yaml
