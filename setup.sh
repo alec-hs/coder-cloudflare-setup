@@ -1,11 +1,13 @@
 #!/bin/bash
 
 # Start Script and ask for info
-echo '------------------------------------------------------------'
+echo "------------------------------------------------------------"
 echo
 echo "              Code Server Automated Setup"
+echo "                       alec-hs"
+echo "    https://github.com/alec-hs/coder-cloudflare-setup"
 echo
-echo '------------------------------------------------------------'
+echo "------------------------------------------------------------"
 echo
 read -s -p "Please enter a password for Coder web GUI: " password
 echo
@@ -15,9 +17,11 @@ echo
 read -s -p "Please enter your Cloudflare API Token: " token
 echo
 echo
+echo "------------------------------------------------------------"
+echo
 echo "         Setting up Caddy and Coder services..."
 echo
-echo '------------------------------------------------------------'
+echo "------------------------------------------------------------"
 
 # Hash the password
 hash=$(printf $password | sha256sum | cut -d' ' -f1)
@@ -41,7 +45,7 @@ chown -R coder:coder /home/coder/.ssh
 curl -fsSL https://code-server.dev/install.sh | sh
 
 # Download caddy file from repo and replace default
-curl https://raw.githubusercontent.com/alec-hs/coder-hetzner-setup/main/code-server.service --output /etc/systemd/system/code-server.service
+curl https://raw.githubusercontent.com/alec-hs/coder-cloudflare-setup/main/code-server.service --output /etc/systemd/system/code-server.service
 
 # Run Coder & run on boot
 systemctl enable --now code-server
@@ -73,7 +77,7 @@ xcaddy build master --with github.com/caddy-dns/cloudflare@latest
 mv caddy /usr/bin
 
 # Download caddy file from repo and replace default
-curl https://raw.githubusercontent.com/alec-hs/coder-hetzner-setup/main/Caddyfile --output /etc/caddy/Caddyfile
+curl https://raw.githubusercontent.com/alec-hs/coder-cloudflare-setup/main/Caddyfile --output /etc/caddy/Caddyfile
 
 # Update Caddyfile 
 sed -i.bak "s/sub.mydomain.com/$domain/" /etc/caddy/Caddyfile
@@ -85,10 +89,12 @@ sudo systemctl start caddy
 
 # Script Complete
 echo
-echo '------------------------------------------------------------'
+echo "------------------------------------------------------------"
 echo
-echo "                Setup complete"
+echo "                      Setup complete"
 echo
-echo " Code Server will be at https://$domain in a few minutes."
+echo "                 Code Server will be ready at"
+echo "            https://$domain"
+echo "                      in a few minutes."
 echo
-echo '------------------------------------------------------------'
+echo "------------------------------------------------------------"
