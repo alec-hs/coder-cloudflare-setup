@@ -4,22 +4,10 @@
 
 This script sets up a Code Server instance on your VM using Caddy as a reverse proxy with DNS-01 challenge to verify domain ownership and issue LetsEncrypt SSL certificates.
 
-<br>
-
----
-
-<br>
-
 ## Tested Distros
 
 - Debian 10
 - Ubuntu 16.04.7 LTS
-
-<br>
-
----
-
-<br>
 
 ## Requirements
 
@@ -29,12 +17,6 @@ This script sets up a Code Server instance on your VM using Caddy as a reverse p
 - Cloudflare Account with API Token with these permissions:
   - Zone / Zone / Read
   - Zone / DNS / Edit
-
-<br>
-
----
-
-<br>
 
 ## Setup Instructions
 
