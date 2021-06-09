@@ -44,7 +44,7 @@ chown -R coder:coder /home/coder/.ssh
 # Download & install Coder
 curl -fsSL https://code-server.dev/install.sh | sh
 
-# Download caddy file from repo and replace default
+# Download service file from repo
 curl https://raw.githubusercontent.com/alec-hs/coder-cloudflare-setup/main/code-server.service --output /etc/systemd/system/code-server.service
 
 # Run Coder & run on boot
