@@ -2,7 +2,7 @@
 
 ## Intro
 
-This script sets up a Code Server instance on your VM using Caddy as a reverse proxy with DNS-01 challenge to verify domain ownership and issue LetsEncrypt SSL certificates.
+This script sets up a [Code Server](https://github.com/cdr/code-server) instance on your VM using [Caddy](https://caddyserver.com/) as a reverse proxy with DNS-01 challenge to verify domain ownership and issue LetsEncrypt SSL certificates.
 
 ## Tested Distros
 
@@ -14,7 +14,7 @@ This script sets up a Code Server instance on your VM using Caddy as a reverse p
 - Linux VMs
 - Curl installed
 - Cloudflare "Full" SSL Setup
-- Cloudflare Account with API Token with these permissions:
+- Cloudflare Account with [API Token](https://developers.cloudflare.com/api/tokens/create) with these permissions:
   - Zone / Zone / Read
   - Zone / DNS / Edit
 
@@ -22,11 +22,10 @@ This script sets up a Code Server instance on your VM using Caddy as a reverse p
 
 1. Setup an A record pointing to you VM's public IP in Cloudflare
 2. SSH onto the VM
-3. Switch to root user
-4. Run the script to install
+3. Switch to root user and run the script (either sudo or login as root)
 
     ```bash
     bash <(curl -fsSL https://raw.githubusercontent.com/alec-hs/coder-hetzner-setup/main/setup.sh)
     ```
 
-5. Access your Coder instance at your domain
+4. Access your Coder instance at your domain
