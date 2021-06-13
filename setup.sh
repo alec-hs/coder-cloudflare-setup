@@ -9,12 +9,35 @@ echo "    https://github.com/alec-hs/coder-cloudflare-setup"
 echo
 echo "------------------------------------------------------------"
 echo
-read -s -p "Please enter a password for Coder web GUI: " password
+read -s -p "Enter a password for Coder web GUI: " password
 echo
 echo
-read -p "Please enter your domain: " domain
+echo "Enter your domain to access Code Server (can be subdomain): "
+read domain
+echo 
+echo "To allow port proxying, subdomain setup will be used. Please"
+echo "enter a number from the below options. For more info:"
+echo "https://github.com/alec-hs/coder-cloudflare-setup/#port-proxy"
+echo 
+echo "     0 - wildcard record"
+echo "     1 - specific ports"
 echo
-read -s -p "Please enter your Cloudflare API Token: " token
+unset suboption
+until [[ $suboption == @(0|1) ]] ; do
+    read -r -p "Your selection: " suboption
+done
+echo
+echo "Enter your proxy TLD, eg: mydomain.com"
+read -p "Your domain: " proxydomain
+echo
+if [ $suboption == 1 ]
+then
+    echo "Enter a space separated list of all the ports you need."
+    echo "               eg:  80 8080 3000 8443"
+    read -p "Your ports: " ports
+fi
+echo
+read -s -p "Enter your Cloudflare API Token: " token
 echo
 echo
 echo "------------------------------------------------------------"
@@ -78,8 +101,20 @@ mv caddy /usr/bin
 curl https://raw.githubusercontent.com/alec-hs/coder-cloudflare-setup/main/Caddyfile --output /etc/caddy/Caddyfile
 
 # Update Caddyfile 
-sed -i.bak "s/sub.mydomain.com/$domain/" /etc/caddy/Caddyfile
 sed -i.bak "s/API_TOKEN/$token/" /etc/caddy/Caddyfile
+if [ $suboption == 0 ]
+then
+    caddyDomains="$domain, *.$proxydomain"
+fi
+if [ $suboption == 1 ]
+then
+    proxyPorts="${ports// /.$proxydomain, }"
+    proxyPorts="$proxyPorts.$proxydomain"
+    caddyDomains="$domain, $proxyPorts"
+fi
+sed -i.bak "s/sub.mydomain.com/$caddyDomains/" /etc/caddy/Caddyfile
+
+
 
 # Update Coder config in /home/coder/.config/code-server/config.yaml
 sed -i.bak "s/password: .*/hashed-password: $hash/" /home/coder/.config/code-server/config.yaml
