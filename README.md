@@ -31,3 +31,5 @@ This script sets up a [Code Server](https://github.com/cdr/code-server) instance
 4. Access your Coder instance at your domain
 
 ## Port Proxy
+
+Add more info here
