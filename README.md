@@ -32,4 +32,12 @@ This script sets up a [Code Server](https://github.com/cdr/code-server) instance
 
 ## Port Proxy
 
-Add more info here
+During the setup process of this script you will be asked to choose an option for port proxying. You can either set up a wildcard DNS entry for `*.mydomain.com` if your domain name registrar supports it or you can create one for every port you want to access (`3000.mydoamin.com`, `8080.mydoamin.com`, etc).
+
+Due to the current setup of Coder you cannot have your code server instance on a subdomain of your proxy domain.
+
+Additionally if you use Cloudflare Proxy (orange cloud) or Cloudflare Access it is recommnded you set DNS records for each port as the wildcard record is not supported by CF Access or CF Proxy.
+
+## Known Issues
+
+If you expiernce any issues such as repeated redirection to Code Server login screen or certifcate issues - make sure you wait a good 5 mins before trying again. These errors are often caused by a delay in the automated issuing of SSL Certs.
