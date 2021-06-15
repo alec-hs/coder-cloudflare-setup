@@ -22,15 +22,14 @@ echo
 echo "     0 - wildcard record"
 echo "     1 - specific ports"
 echo
-unset suboption
-until [[ $suboption == @(0|1) ]] ; do
-    read -r -p "Your selection: " suboption
+unset subOption
+until [[ $subOption == @(0|1) ]] ; do
+    read -r -p "Your selection: " subOption
 done
 echo
 echo "Enter your proxy TLD, eg: mydomain.com"
-read -p "Your domain: " proxydomain
-echo
-if [ $suboption == 1 ]
+read -p "Your domain: " proxyDomain
+if [ $subOption == 1 ]
 then
     echo "Enter a space separated list of all the ports you need."
     echo "               eg:  80 8080 3000 8443"
@@ -70,6 +69,9 @@ curl -fsSL https://code-server.dev/install.sh | sh
 # Download service file from repo
 curl https://raw.githubusercontent.com/alec-hs/coder-cloudflare-setup/main/code-server.service --output /etc/systemd/system/code-server.service
 
+# Update coder file with proxy domain
+sed -i.bak "s/mydomain.com/$proxyDomain/" /etc/systemd/system/code-server.service
+
 # Run Coder & run on boot
 systemctl enable --now code-server
 
@@ -102,14 +104,14 @@ curl https://raw.githubusercontent.com/alec-hs/coder-cloudflare-setup/main/Caddy
 
 # Update Caddyfile 
 sed -i.bak "s/API_TOKEN/$token/" /etc/caddy/Caddyfile
-if [ $suboption == 0 ]
+if [ $subOption == 0 ]
 then
-    caddyDomains="$domain, *.$proxydomain"
+    caddyDomains="$domain, *.$proxyDomain"
 fi
-if [ $suboption == 1 ]
+if [ $subOption == 1 ]
 then
-    proxyPorts="${ports// /.$proxydomain, }"
-    proxyPorts="$proxyPorts.$proxydomain"
+    proxyPorts="${ports// /.$proxyDomain, }"
+    proxyPorts="$proxyPorts.$proxyDomain"
     caddyDomains="$domain, $proxyPorts"
 fi
 sed -i.bak "s/sub.mydomain.com/$caddyDomains/" /etc/caddy/Caddyfile
