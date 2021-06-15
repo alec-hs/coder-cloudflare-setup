@@ -12,8 +12,11 @@ echo
 read -s -p "Enter a password for Coder web GUI: " password
 echo
 echo
-echo "Enter your domain to access Code Server (can be subdomain): "
-read domain
+echo "Enter root domain to access Code Server (not a subdomain): "
+unset domain
+until [[ $domain =~ ^[A-Za-z0-9-]+.([A-Za-z]{3,}|[A-Za-z]{2}.[A-Za-z]{2}|[A-Za-z]{2})$ ]] ; do
+    read -r domain
+done
 echo 
 echo "To allow port proxying, subdomain setup will be used. Please"
 echo "enter a number from the below options. For more info:"
@@ -27,7 +30,7 @@ until [[ $subOption == @(0|1) ]] ; do
     read -r -p "Your selection: " subOption
 done
 echo
-echo "Enter your proxy TLD, eg: mydomain.com"
+echo "Enter your proxy domain, eg: mydomain.com"
 read -p "Your domain: " proxyDomain
 if [ $subOption == 1 ]
 then
