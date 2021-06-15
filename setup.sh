@@ -44,6 +44,7 @@ echo
 echo "         Setting up Caddy and Coder services..."
 echo
 echo "------------------------------------------------------------"
+sleep 3
 
 # Hash the password
 hash=$(printf $password | sha256sum | cut -d' ' -f1)
